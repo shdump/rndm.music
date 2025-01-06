@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaneeyy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #000000;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .tile-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 800px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .tile {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tile.glow {
+      box-shadow: 0 0 15px 5px rgba(128, 0, 128, 0.8);
+      transform: scale(1.05);
+    }
+
+    .heart-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: pink; 
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="tile-container">
+
+  <div class="tile" data-song="MP3/breathe.mp3">
+    <img src="Images/breathe.jpg">
+  </div>
+  <div class="tile" data-song="MP3/lowkey.mp3">
+    <img src="Images/lowkey.jpg">
+  </div>
+  <div class="tile" data-song="MP3/crush.mp3">
+    <img src="Images/crush.jpg">
+  </div>
+  <div class="tile" data-song="MP3/middle.mp3">
+    <img src="Images/middle.jpg">
+  </div>
+  <div class="tile" data-song="MP3/breathe1.mp3">
+    <img src="Images/breathe1.jpg">
+  </div>
+  <div class="tile" data-song="MP3/jealous.mp3">
+    <img src="Images/jealous.jpg">
+  </div>
+  <div class="tile" data-song="MP3/AMFault.mp3">
+    <img src="Images/AMFault.jpg">
+  </div>
+  <div class="tile" data-song="MP3/HAB.mp3">
+    <img src="Images/HAB.jpg">
+  </div>
+</div>
+
+<audio id="audio-player"></audio>
+
+<button class="heart-button" id="shuffle-button">💜</button>
+
+<script>
+  const tiles = document.querySelectorAll('.tile');
+  const audioPlayer = document.getElementById('audio-player');
+  const shuffleButton = document.getElementById('shuffle-button');
+  let activeTile = null;
+
+  tiles.forEach(tile => {
+    const song = tile.getAttribute('data-song');
+
+    tile.addEventListener('click', () => {
+      if (activeTile === tile) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        tile.classList.remove('glow');
+        activeTile = null;
+      } else {
+        if (activeTile) {
+          activeTile.classList.remove('glow');
+        }
+        activeTile = tile;
+        audioPlayer.src = song;
+        audioPlayer.play();
+        tile.classList.add('glow');
+      }
+    });
+  });
+
+  
+  shuffleButton.addEventListener('click', () => {
+    const tileArray = Array.from(tiles);
+    for (let i = tileArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      tileArray[i].parentNode.appendChild(tileArray[j]);
+    }
+  });
+</script>
+
+</body>
+</html>
